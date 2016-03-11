@@ -1,0 +1,81 @@
+#include <stdio.h>
+
+#define MAX_ARRAY_SIZE 50
+#define FALSE 0
+#define TRUE !FALSE
+
+/*
+ * Written by Nicholas A. Ivanoff
+ * -02171157
+ * 3/7/2016 CSCI 112
+ */
+
+int populate_array(int array[]){
+    int valid = FALSE;
+    int n = 0;
+    int i = 0;
+    while(!valid){
+        printf("Enter the value of n > ");
+        scanf(" %d",&n);
+        if(n<=0){
+            printf("%d is less than zero. Please try again.\n\n",n);
+        } else if(n>MAX_ARRAY_SIZE){
+            printf("%d exceeds the maximum array size. Please try again.\n\n",n);
+        } else{
+            valid = TRUE;
+        }
+    }  // While n is less then 0 or greater then 50 checks if valid.
+    printf("Enter %d integers (positive, negative, or zero) >\n",n);
+    for(i=0; i<n; i++){
+        scanf(" %d",&array[i]);
+    } // inserts values into the array
+
+    return n;
+} // Fill array with values from user.
+
+void print_array(int array[],int n){
+    int i = 0;
+    for(i=0; i<n; i++ ){
+        printf("   %+d\n",array[i]);
+    }
+} // Print out array elements.
+
+void swap (int array[], int index1, int index2){
+    int temp = array[index1]; // saved whatever value at index1;
+    array[index1] = array[index2];
+    array[index2] = temp;
+} // Swap two array elements.
+
+int partition(int array[], int low, int high){
+    int p = array[high];
+    int i = low;
+    int j = 0;
+    for(j = low; j<=high-1; j++){
+        if(array[j] <= p){
+            swap(array,i,j);
+            i = i+1;
+        } // end if
+    } // end for
+    swap(array,i,high);
+    return i;
+
+} // Find the partition point (pivot).
+
+void quicksort(int array[], int low, int high){
+    int p = 0;
+    if(low < high){
+        p = partition(array,low,high);
+        quicksort(array,low, p-1);
+        quicksort(array,p+1,high);
+    } // end if
+} // Sorting algorithm.
+
+int main() {
+    int array[MAX_ARRAY_SIZE] = {0};
+    int n = populate_array(array);
+    printf("The initial array contains: \n");
+    print_array(array,n);
+    quicksort(array,0,n-1);
+    printf("The array is now sorted:\n");
+    print_array(array,n);
+} // end main
